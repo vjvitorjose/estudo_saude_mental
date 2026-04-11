@@ -23,3 +23,28 @@ Representa a quantidade de valores que fogem do padrão, para cada doença. O gr
 
 eda_wb_distributions.png:
 Representa a distribuição dos principais dados econômicos de todos os países no ano de 2015. A tabela ofertada pelo IHME contém anos diferentes em colunas diferentes, portanto, para simplificar a análise inicial apenas o ano de 2015 foi avaliado. Na avaliação do PIB/ GDP, vemos um pico enorme em valores baixissímos e uma linha que quase desaparece conforme crescem os valores. Isso demonstra que existe um número enorme de países com PIB menor que 1 trilhão de dólares, porém alguns poucos países que apresentam valores até 5 vezes maior, expremendo a maioria dos países no lado esquerdo do gráfico dificultando sua análise. Isso mostra que o PIB será um dado que precisará de tratamento. A distribuição do desemprego tem uma leve cauda para a direita, como esperado. A maioria dos países possui um índice de desemrpego entre 0% e 10%, com alguns países ultrapassando 25%, que já representa um país com a economia em crise. Assim como o desemprego, o índice Gini apresenta a distribuição esperada, com uma concetração de países com valores menores (representam menor desigualdade social) e poucos países com valores maiores (representam maior desigualdade social), mas no geral bem distribuídos.
+
+grafico01_cobertura_geral.png:
+Apresenta a cobertura de cada variável como percentual de entradas preenchidas sobre o total de países e anos. As variáveis do dataset do Kaggle (GBD) têm cobertura de 100% para todos os transtornos, por que o próprio GBD preenche países sem dados com estimativas feitas com uma metaregressão bayesiana, ou seja, muitas vezes representam uma estimativa do IHME. Já as váriaveis do World Bank, algumas apresentam uma cobertura não satisfatória, o que torna necessário a aplicação de técnicas de manipulação para dados faltantes.
+
+grafico02_cobertura_anual_wb.png:
+Detalha a cobertura das variáveis no dataset do World Bank, representando como a distribuição se dá ao longo do tempo. Esse gráfico ajuda a visualização para que seja verificada uma necessidade de tratamento de dados faltantes baseados nos anos, que não será necessário.
+
+grafico03_gaps_(variavel).png:
+Apresentam uma melhor visualização da distribuição dos gaps por país com o uso de um histograma, assim como um gráfico sobre a cobertura de cada variável ao longo dos anos. Os gráficos revelam a necessidade de descarte da variável de dívida pública, visto que possui um gap muito grande para muitos países, e existem poucos países em que esse gap é menor que 5. Além disso, a partir da observação dos gráficos, é possível notar a necessidade de técnicas de preenchimento de dados faltantes em gaps menores, com métodos de mineração de dados ou de interpolação.
+
+grafico04_gdp_assimetria.png:
+Comparação entre a distribuição bruta do PIB numa snapshot de 2010 com o resultado da transformação log. Na distribuição bruta praticamente todos os países ficam próximos de 0, com uma cauda que se extende até 15.000 bilhões de USD, com um skewness de 8.56. Após a tranformação, a distribuição passa a ser mais simétrica, com um skewness de -0.01.
+
+grafico05_gdp_skew_temporal.png:
+Confirma a prevalência da assimetria observada no ano de 2010 para todos os anos analisados.
+
+grafico06_distribuicoes_wb.png:
+Apresenta a distribuição das variáveis Desemprego Total, Gini e Internet, assim como o skewness de cada um. Inicialmente não será feita nenhuma técnica para redução da assimetria visualizada.
+
+grafico07_distribuicoes_kaggle.png:
+Apresenta a distribuição dos transtornos mentais no dataset do Kaggle, assim como o skewness de cada um. Inicialmente não será feita nenhuma técnica para redução da assimetria visualizada.
+
+grafico08_outliers_gdp.png:
+Gráficos boxplot para visualizar a presença dos outliers no PIB total por ano, reforçando a necessidade da transformação log ou técnicas para a redução da assimetria presente na distribuição dos valores dessa variável.
+
