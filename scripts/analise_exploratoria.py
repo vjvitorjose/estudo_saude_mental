@@ -46,7 +46,7 @@ plt.figure(figsize=(15, 5))
 for i, (code, name) in enumerate(key_series.items()):
     plt.subplot(1, 3, i+1)
     data = df_wb[df_wb['Series Code'] == code]['2015 [YR2015]'].dropna()
-    sns.histplot(data, kde=True, color='salmon', log_scale=(name=='PIB'))
+    sns.histplot(data, kde=True, color='salmon')
     plt.title(f'Distribuição: {name}')
 plt.tight_layout()
 plt.savefig(PLOTS_DIR / 'eda_wb_distributions.png')
