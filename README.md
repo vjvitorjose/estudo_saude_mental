@@ -48,3 +48,16 @@ Apresenta a distribuição dos transtornos mentais no dataset do Kaggle, assim c
 grafico08_outliers_gdp.png:
 Gráficos boxplot para visualizar a presença dos outliers no PIB total por ano, reforçando a necessidade da transformação log ou técnicas para a redução da assimetria presente na distribuição dos valores dessa variável.
 
+## Pré-processamento:
+
+**importante explicar o melt
+
+O primeiro passo do pré-processamento foi a tranformação da tabela de ihme_original.csv. Como citado, esse dataset apresenta cada ano em uma coluna diferente (cada ano um atributo de uma instância), enquanto o dataset do kaggle apresenta cada ano em uma linha (cada ano como uma instância isolada). Para corrigir esse problema, foi feito o melt da tabela usando pd.melt. Além disso, as colunas de anos do dataset estavam escritas como '2000 [YR2000]', essas colunas (que se tornaram linhas) foram renomeadas para apenas o número do ano usando expressões regulares. Além disso, o rodapé foi removido e os dados vazios (formatados pelo banco como '..') foram formatados para np.nan. O dataset após o melt foi salvo em ihme_melted.csv.
+
+Após o melt, os indicadores da tabela original (PIB, GiniIndex, etc) ficaram todos em uma única coluna, cada um definindo uma instância junto do ano (como era no datset original). Porém, para nosso estudo, cada indicador desse precisa estar em uma coluna diferente, sendo cada instância definida por país e ano, apenas. Para isso, foi usado o método pivot_table da biblioteca pandas. A nova tabela já pivotada foi salva em ihme_pivoted.csv.
+
+Agora as duas tabelas podem ser unidas. Ambas possuem como primeiras colunas: nome do país, código do país e ano, seguidos das colunas com as informações de cada tabela específica. Porem, antes do merge, os nomes das colunas com índices das doenças em kaggle_original.csv foram renomeadas de 'Schizophrenia disorders (share of population) - Sex: Both - Age: Age-standardized' para 'Preval_Esquizofrenia', por exemplo.
+
+Para o merge das duas tabelas foi usado um inner join. Essa escolha é estratégica pois, graças ao inner join, apenas as instâncias que tiverem o mesmo código de país e o mesmo ano serão transcritas para a tabela final, removendo automaticamente instâncias que só estão presentes em uma tabela. Isso irá descartar automaticamente os anos de 1990-1993 que só existem na tabela do Kaggle e os anos de 2020-2025 que só existem na tabela do IHME, além dos agrupamentos de países citados que só existem na tabela do IHME. A chave para a junção será o código do país e o ano, e os dados são salvos em merged_raw.csv.
+
+Após o merge ainda existem alguns problemas, como, por exemplo, muitos dados faltantes, dados com muita discrepância, entre outros. Todos esses problemas podem impactar significamente na qualidade do modelo e do conhecimento gerado futuramente. Portanto, a técnica escolhida para lidar com cada um desses problemas deve ser escolhida cautelosamente. 
