@@ -1,0 +1,104 @@
+CARGA
+Shape original  : (5400, 18)
+Países          : 200
+Período         : 1993–2019
+PASSO 1 | Corte de período: 2000–2019
+Linhas removidas: 1400 (anos 1993–1999)
+Shape após corte: (4000, 18)
+PASSO 2 | Descartar variáveis de baixa cobertura
+  Removida : Central government debt, total (% of GDP)
+             cobertura = 23.3%
+  Removida : Unemployment with advanced education (% of total labor force with
+             cobertura = 41.0%
+  Removida : Unemployment with basic education (% of total labor force with ba
+             cobertura = 42.1%
+  Removida : Unemployment with intermediate education (% of total labor force 
+             cobertura = 42.0%
+
+============================================================
+PASSO 3 | Colunas após renomeação
+============================================================
+  Entity
+  Code
+  Year
+  Preval_Esquizofrenia
+  Preval_Depressao
+  Preval_Ansiedade
+  Preval_Bipolaridade
+  Preval_T_Alimentar
+  GDP_raw
+  Gini
+  Internet
+  Unemp_total
+  Urban_pct
+  Urban_growth
+PASSO 4 | Transformação log no GDP
+Skewness GDP bruto : 9.51
+Skewness log(GDP)  : 0.04
+PASSO 5 | Flags de imputação
+  Gini: 2462 valores faltantes marcados
+  Unemp_total: 1576 valores faltantes marcados
+  Internet: 187 valores faltantes marcados
+  GDP_log: 49 valores faltantes marcados
+PASSO 6 | Interpolação linear (cobertura >= 70%)
+  Internet    : limit=3  |   105 interpolados  |   82 NaN restantes
+  GDP_log     : limit=2  |    15 interpolados  |   34 NaN restantes
+PASSO 7 | KNN Imputer (Gini e Unemp_total)
+  Lógica: para cada observação (país × ano) com valor faltante,
+  o KNN encontra os K=5 países mais similares NO MESMO ANO,
+  usando ['GDP_log', 'Urban_pct', 'Urban_growth', 'Internet', 'Preval_Depressao', 'Preval_Ansiedade'] como base de distância.
+  O valor imputado é a média ponderada dos K vizinhos (peso = 1/distância).
+  Gini        : 2462 imputados via KNN  |    0 NaN restantes
+  Unemp_total : 1576 imputados via KNN  |    0 NaN restantes
+PASSO 8 | Padronização z-score (variáveis econômicas)
+Prevalências e GDP_raw NÃO padronizados
+  GDP_log        : mean=23.8026  std=2.4322
+  Gini           : mean=38.3312  std=6.4030
+  Internet       : mean=32.0561  std=29.3905
+  Unemp_total    : mean=7.7936  std=5.1703
+  Urban_pct      : mean=57.7345  std=23.5399
+  Urban_growth   : mean=2.0824  std=2.2080
+PASSO 9 | Colunas finais (23)
+  Entity
+  Code
+  Year
+  Preval_Esquizofrenia
+  Preval_Depressao
+  Preval_Ansiedade
+  Preval_Bipolaridade
+  Preval_T_Alimentar
+  GDP_log
+  GDP_raw
+  Gini
+  Internet
+  Unemp_total
+  Urban_pct
+  Urban_growth
+  Gini_imputed
+  Unemp_total_imputed
+  Internet_imputed
+  GDP_log_imputed
+  Gini_imputed_method
+  Unemp_total_imputed_method
+  Internet_imputed_method
+  GDP_log_imputed_method
+PASSO 10 | Painel balanceado
+Painel principal  : 200 países, 4000 obs
+Painel balanceado : 197 países, 3940 obs
+PASSO 11 | Nulos restantes no painel principal
+  GDP_log: 34 NaN (0.9%)
+  GDP_raw: 49 NaN (1.2%)
+  Internet: 82 NaN (2.1%)
+RESUMO DE IMPUTAÇÃO
+  Gini:
+    knn                      : 2462
+    original                 : 1538
+  Unemp_total:
+    original                 : 2424
+    knn                      : 1576
+  Internet:
+    original                 : 3895
+    interpolacao_linear      : 105
+  GDP_log:
+    original                 : 3985
+    interpolacao_linear      : 15
